@@ -25,7 +25,7 @@
         <version>0.15-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bitcoinj-core</artifactId>
+    <artifactId>bitcoinj-core-ok</artifactId>
 
     <name>bitcoinj</name>
     <description>A Java Bitcoin library</description>
@@ -135,7 +135,7 @@
                     </execution>
                 </executions>
             </plugin>
-
+	<!-- 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -156,10 +156,11 @@
                     <quiet>true</quiet>
                 </configuration>
             </plugin>
-
+	 -->
             <!-- Verify the dependency chain: see https://github.com/gary-rowe/BitcoinjEnforcerRules for
                more information on this.
             -->
+            <!-- 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
@@ -175,12 +176,8 @@
                                 <DependencyConvergence/>
                                 <digestRule implementation="uk.co.froot.maven.enforcer.DigestRule">
 
-                                    <!-- Create a snapshot to build the list of URNs below -->
                                     <buildSnapshot>true</buildSnapshot>
 
-                                    <!-- List of required hashes -->
-                                    <!-- Format is URN of groupId:artifactId:version:type:classifier:scope:hash -->
-                                    <!-- classifier is "null" if not present -->
                                     <urns>
                                         <urn>cglib:cglib-nodep:2.2:jar:null:test:59afed7ab65e7ec6585d5bc60556c3cbd203532b</urn>
                                         <urn>com.fasterxml.jackson.core:jackson-annotations:2.5.0:jar:null:test:a2a55a3375bc1cef830ca426d68d2ea22961190e</urn>
@@ -219,7 +216,6 @@
                                         <urn>org.slf4j:slf4j-jdk14:1.7.20:jar:null:test:b568c92eec50edc922c52b3e759982579170c2be</urn>
                                         <urn>org.sonatype.plugins:nexus-staging-maven-plugin:1.6.5:maven-plugin:null:runtime:455ca2aa8cd14a06608f1538bd6a1efd09561563</urn>
                                         <urn>postgresql:postgresql:9.1-901.jdbc4:jar:null:compile:153f2f92a786f12fc111d0111f709012df87c808</urn>
-                                        <!-- A check for the rules themselves -->
                                         <urn>uk.co.froot.maven.enforcer:digest-enforcer-rules:0.0.1:jar:null:runtime:16a9e04f3fe4bb143c42782d07d5faf65b32106f</urn>
                                     </urns>
                                 </digestRule>
@@ -228,7 +224,6 @@
                     </execution>
                 </executions>
 
-                <!-- Ensure we download the enforcer rules -->
                 <dependencies>
                     <dependency>
                         <groupId>uk.co.froot.maven.enforcer</groupId>
@@ -236,9 +231,9 @@
                         <version>0.0.1</version>
                     </dependency>
                 </dependencies>
-
             </plugin>
-
+			 -->
+			 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -423,7 +418,7 @@
         <dependency>
             <groupId>org.fusesource.leveldbjni</groupId>
             <artifactId>leveldbjni-all</artifactId>
-            <version>1.8</version>
+            <version>1.7</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -437,5 +432,11 @@
             <version>2.7.2</version>
         </dependency>
     </dependencies>
-
+	
+	<distributionManagement>
+	    <snapshotRepository>
+	      <id>nexus-snapshots</id>
+	      <url>http://192.168.0.2:8081/nexus/content/repositories/snapshots/</url>
+	    </snapshotRepository>
+	</distributionManagement>
 </project>
