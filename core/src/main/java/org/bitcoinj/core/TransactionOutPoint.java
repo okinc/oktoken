@@ -191,7 +191,7 @@ public class TransactionOutPoint extends ChildMessage {
         return hash;
     }
 
-    void setHash(Sha256Hash hash) {
+    public void setHash(Sha256Hash hash) {
         this.hash = hash;
     }
 

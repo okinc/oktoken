@@ -49,7 +49,7 @@ public abstract class Message {
     // Note that it's relative to the start of the array NOT the start of the message payload.
     protected int cursor;
 
-    protected int length = UNKNOWN_LENGTH;
+    public int length = UNKNOWN_LENGTH;
 
     // The raw message payload bytes themselves.
     protected byte[] payload;

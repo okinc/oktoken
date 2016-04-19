@@ -1,11 +1,27 @@
+/**
+ * Copyright 2016 OKLink Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.oklink.bitcoinj.params;
 
-import static com.google.common.base.Preconditions.checkState;
 
 import org.bitcoinj.core.Block;
+import org.bitcoinj.core.Utils;
 import org.bitcoinj.params.MainNetParams;
 
-public class OKMainNetParams extends MainNetParams {
+public class OKMainNetParams extends OKAbstractNetParams {
 	/**
 	 * 
 	 */
@@ -14,6 +30,14 @@ public class OKMainNetParams extends MainNetParams {
 	public OKMainNetParams(){
 		super();
 		
+		interval = INTERVAL;
+		targetTimespan = TARGET_TIMESPAN;
+		maxTarget = Utils.decodeCompactBits(0x1d00ffffL);
+		dumpedPrivateKeyHeader = 128;
+
+		bip32HeaderPub = 0x0488B21E; // The 4 byte header that serializes in base58 to "xpub".
+		bip32HeaderPriv = 0x0488ADE4; //The 4 byte header that serializes in base58 to "xprv"
+	        
 		addressHeader = 46;
 		p2shHeader = 18;
 		port = 6588;
@@ -44,4 +68,9 @@ public class OKMainNetParams extends MainNetParams {
         }
         return instance;
     }
+
+	@Override
+	public String getPaymentProtocolId() {
+		return PAYMENT_PROTOCOL_ID_MAINNET;
+	}
 }

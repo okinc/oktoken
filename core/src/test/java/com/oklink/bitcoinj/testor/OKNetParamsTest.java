@@ -7,6 +7,7 @@ import com.oklink.bitcoinj.params.OKRegTestNetParams;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,11 +59,17 @@ public class OKNetParamsTest {
 	
 	@Test 
 	public void testMulitAddress(){
+		List<ECKey> keys  = new ArrayList<ECKey>(3);
+		for(int i = 0; i < 3; i++){
+			ECKey eckey = new ECKey();	
+			System.out.println("ECKey_" + i + "\r\n   pri: " + eckey.getPrivateKeyAsHex() +
+					"\r\n   pub: " + eckey.getPublicKeyAsHex());
+			keys.add(eckey);
+		}
+		
+		
 		NetworkParameters params = OKMainNetParams.get();
-		ECKey eckey1 = new ECKey();
-		ECKey eckey2 = new ECKey();
-		ECKey eckey3 = new ECKey();
-		List<ECKey> keys = Arrays.asList(eckey1, eckey2, eckey3);
+	
         Script p2shScript = ScriptBuilder.createP2SHOutputScript(2, keys);
         Address address = Address.fromP2SHScript(OKMainNetParams.get(), p2shScript);
         

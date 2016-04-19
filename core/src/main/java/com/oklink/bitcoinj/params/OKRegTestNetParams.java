@@ -1,3 +1,19 @@
+/**
+ * Copyright 2016 OKLink Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.oklink.bitcoinj.params;
 
 import org.bitcoinj.core.Block;
@@ -20,8 +36,6 @@ public class OKRegTestNetParams extends OKTestNetParams {
         synchronized (OKTestNetParams.class) {
             if (genesis == null) {
                 genesis = super.getGenesisBlock();
-               //todo！！！创世块信息
-                
             }
             return genesis;
         }
@@ -36,4 +50,12 @@ public class OKRegTestNetParams extends OKTestNetParams {
         }
         return instance;
     }
+
+	@Override
+	public String getPaymentProtocolId() {
+		// TODO Auto-generated method stub
+		return PAYMENT_PROTOCOL_ID_REGTEST;
+	}
+	
+	
 }

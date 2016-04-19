@@ -40,7 +40,7 @@ import static org.bitcoinj.script.ScriptOpCodes.*;
  * protocol at a lower level.</p>
  */
 public class ScriptBuilder {
-    private List<ScriptChunk> chunks;
+    protected List<ScriptChunk> chunks;		//private -》 protected by chenzs
 
     /** Creates a fresh ScriptBuilder with an empty program. */
     public ScriptBuilder() {

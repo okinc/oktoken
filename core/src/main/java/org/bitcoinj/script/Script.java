@@ -100,7 +100,7 @@ public class Script {
     }
 
     // Used from ScriptBuilder.
-    Script(List<ScriptChunk> chunks) {
+    public Script(List<ScriptChunk> chunks) {
         this.chunks = Collections.unmodifiableList(new ArrayList<ScriptChunk>(chunks));
         creationTimeSeconds = Utils.currentTimeSeconds();
     }
