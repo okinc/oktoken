@@ -136,7 +136,7 @@ public class BlockChainTest {
 
     @Test
     public void unconnectedBlocks() throws Exception {
-        Block b1 = PARAMS.getGenesisBlock().createNextBlock(coinbaseTo);
+        Block b1 =  ((Block)PARAMS.getGenesisBlock()).createNextBlock(coinbaseTo);
         Block b2 = b1.createNextBlock(coinbaseTo);
         Block b3 = b2.createNextBlock(coinbaseTo);
         // Connected.
@@ -153,7 +153,7 @@ public class BlockChainTest {
     public void difficultyTransitions() throws Exception {
         // Add a bunch of blocks in a loop until we reach a difficulty transition point. The unit test params have an
         // artificially shortened period.
-        Block prev = PARAMS.getGenesisBlock();
+        Block prev = (Block)PARAMS.getGenesisBlock();
         Utils.setMockClock(System.currentTimeMillis()/1000);
         for (int height = 0; height < PARAMS.getInterval() - 1; height++) {
             Block newBlock = prev.createNextBlock(coinbaseTo, 1, Utils.currentTimeSeconds(), height);
@@ -271,7 +271,7 @@ public class BlockChainTest {
     @Test
     public void duplicates() throws Exception {
         // Adding a block twice should not have any effect, in particular it should not send the block to the wallet.
-        Block b1 = PARAMS.getGenesisBlock().createNextBlock(coinbaseTo);
+        Block b1 =  ((Block)PARAMS.getGenesisBlock()).createNextBlock(coinbaseTo);
         Block b2 = b1.createNextBlock(coinbaseTo);
         Block b3 = b2.createNextBlock(coinbaseTo);
         assertTrue(chain.add(b1));
@@ -292,7 +292,7 @@ public class BlockChainTest {
         // Covers issue 166 in which transactions that depend on each other inside a block were not always being
         // considered relevant.
         Address somebodyElse = new ECKey().toAddress(PARAMS);
-        Block b1 = PARAMS.getGenesisBlock().createNextBlock(somebodyElse);
+        Block b1 =  ((Block)PARAMS.getGenesisBlock()).createNextBlock(somebodyElse);
         ECKey key = wallet.freshReceiveKey();
         Address addr = key.toAddress(PARAMS);
         // Create a tx that gives us some coins, and another that spends it to someone else in the same block.
@@ -320,7 +320,7 @@ public class BlockChainTest {
         Address addressToSendTo = receiveKey.toAddress(PARAMS);
 
         // Create a block, sending the coinbase to the coinbaseTo address (which is in the wallet).
-        Block b1 = PARAMS.getGenesisBlock().createNextBlockWithCoinbase(Block.BLOCK_VERSION_GENESIS, wallet.currentReceiveKey().getPubKey(), height++);
+        Block b1 =  ((Block)PARAMS.getGenesisBlock()).createNextBlockWithCoinbase(Block.BLOCK_VERSION_GENESIS, wallet.currentReceiveKey().getPubKey(), height++);
         chain.add(b1);
 
         // Check a transaction has been received.
@@ -455,7 +455,7 @@ public class BlockChainTest {
     public void rollbackBlockStore() throws Exception {
         // This test simulates an issue on Android, that causes the VM to crash while receiving a block, so that the
         // block store is persisted but the wallet is not.
-        Block b1 = PARAMS.getGenesisBlock().createNextBlock(coinbaseTo);
+        Block b1 =  ((Block)PARAMS.getGenesisBlock()).createNextBlock(coinbaseTo);
         Block b2 = b1.createNextBlock(coinbaseTo);
         // Add block 1, no frills.
         assertTrue(chain.add(b1));

@@ -191,7 +191,7 @@ public class FullBlockTestGenerator {
         Queue<TransactionOutPointWithValue> spendableOutputs = new LinkedList<TransactionOutPointWithValue>();
 
         int chainHeadHeight = 1;
-        Block chainHead = params.getGenesisBlock().createNextBlockWithCoinbase(Block.BLOCK_VERSION_GENESIS, coinbaseOutKeyPubKey, chainHeadHeight);
+        Block chainHead = ((Block)params.getGenesisBlock()).createNextBlockWithCoinbase(Block.BLOCK_VERSION_GENESIS, coinbaseOutKeyPubKey, chainHeadHeight);
         blocks.add(new BlockAndValidity(chainHead, true, false, chainHead.getHash(), 1, "Initial Block"));
         spendableOutputs.offer(new TransactionOutPointWithValue(
                 new TransactionOutPoint(params, 0, chainHead.getTransactions().get(0).getHash()),

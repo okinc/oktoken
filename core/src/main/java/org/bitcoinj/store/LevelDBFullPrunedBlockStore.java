@@ -30,6 +30,7 @@ import java.nio.ByteBuffer;
 
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.AddressFormatException;
+import org.bitcoinj.core.Block;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.ScriptException;
 import org.bitcoinj.core.Sha256Hash;
@@ -322,8 +323,8 @@ public class LevelDBFullPrunedBlockStore implements FullPrunedBlockStore {
         try {
             // Set up the genesis block. When we start out fresh, it is by
             // definition the top of the chain.
-            StoredBlock storedGenesisHeader = new StoredBlock(params.getGenesisBlock().cloneAsHeader(),
-                    params.getGenesisBlock().getWork(), 0);
+            StoredBlock storedGenesisHeader = new StoredBlock( ((Block)params.getGenesisBlock()).cloneAsHeader(),
+            		((Block)params.getGenesisBlock()).getWork(), 0);
             // The coinbase in the genesis block is not spendable. This is
             // because of how the reference client inits
             // its database - the genesis transaction isn't actually in the db

@@ -18,8 +18,11 @@ package com.oklink.bitcoinj.params;
 
 
 import org.bitcoinj.core.Block;
+import org.bitcoinj.core.BlockInf;
 import org.bitcoinj.core.Utils;
 import org.bitcoinj.params.MainNetParams;
+
+import com.oklink.bitcoinj.core.OKBlock;
 
 public class OKMainNetParams extends OKAbstractNetParams {
 	/**
@@ -46,13 +49,13 @@ public class OKMainNetParams extends OKAbstractNetParams {
 		acceptableAddressCodes = new int[] { addressHeader, p2shHeader };
 	}
 	
-	 private static Block genesis;
+	 private static OKBlock genesis;
 
     @Override
-    public Block getGenesisBlock() {
+    public BlockInf getGenesisBlock() {
         synchronized (OKMainNetParams.class) {
             if (genesis == null) {
-                genesis = super.getGenesisBlock();
+                genesis = (OKBlock) super.getGenesisBlock();
                //todo！！！创世块信息
                 
             }

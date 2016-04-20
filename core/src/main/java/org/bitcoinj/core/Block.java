@@ -43,7 +43,7 @@ import static org.bitcoinj.core.Sha256Hash.*;
  * 
  * <p>Instances of this class are not safe for use by multiple threads.</p>
  */
-public class Block extends Message {
+public class Block extends Message implements BlockInf{
     /**
      * Flags used to control which elements of block validation are done on
      * received blocks.

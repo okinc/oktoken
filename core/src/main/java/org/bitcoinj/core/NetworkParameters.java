@@ -70,7 +70,7 @@ public abstract class NetworkParameters {
 
     // TODO: Seed nodes should be here as well.
 
-    protected Block genesisBlock;
+    protected BlockInf genesisBlock;
     protected BigInteger maxTarget;
     protected int port;
     protected long packetMagic;  // Indicates message origin network and is used to seek to the next message when stream state is unknown.
@@ -302,7 +302,7 @@ public abstract class NetworkParameters {
      * and a message in the coinbase transaction. It says, <i>"The Times 03/Jan/2009 Chancellor on brink of second
      * bailout for banks"</i>.</p>
      */
-    public Block getGenesisBlock() {
+    public BlockInf getGenesisBlock() {
         return genesisBlock;
     }
 

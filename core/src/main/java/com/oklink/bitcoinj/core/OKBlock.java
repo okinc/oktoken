@@ -20,11 +20,6 @@ import com.google.common.annotations.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 import org.bitcoinj.core.*;
-import org.bitcoinj.core.Message;
-import org.bitcoinj.core.MessageSerializer;
-import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.core.ProtocolException;
-import org.bitcoinj.core.Sha256Hash;
 import org.bitcoinj.script.*;
 import org.slf4j.*;
 
@@ -37,7 +32,7 @@ import java.util.*;
 import static org.bitcoinj.core.Coin.*;
 import static org.bitcoinj.core.Sha256Hash.*;
 
-public class OKBlock extends Message {
+public class OKBlock extends Message implements BlockInf{
     /**
      * Flags used to control which elements of block validation are done on
      * received blocks.
@@ -79,13 +74,15 @@ public class OKBlock extends Message {
     /** Height of the first block */
     public static final int BLOCK_HEIGHT_GENESIS = 0;
 
+    
+    //OKToken OKBlock从version=1起就支持以下BIP协议
     public static final int BLOCK_VERSION_GENESIS = 1;
     /** Block version introduced in BIP 34: Height in coinbase */
-    public static final int BLOCK_VERSION_BIP34 = 2;
+    public static final int BLOCK_VERSION_BIP34 = 1;					//bitcoin is 2
     /** Block version introduced in BIP 66: Strict DER signatures */
-    public static final int BLOCK_VERSION_BIP66 = 3;
+    public static final int BLOCK_VERSION_BIP66 = 1;					//bitcoin is 3
     /** Block version introduced in BIP 65: OP_CHECKLOCKTIMEVERIFY */
-    public static final int BLOCK_VERSION_BIP65 = 4;
+    public static final int BLOCK_VERSION_BIP65 = 1;					//bitcoin is 4
 
     // Fields defined as part of the protocol format.
     /*sizeof(BlockHeader)=104,每个区块头大小固定为104字节。
@@ -799,7 +796,7 @@ public class OKBlock extends Message {
     }
 
     /** Returns the version of the block data structure as defined by the Bitcoin protocol. */
-    public long getVersion() {
+    public int getVersion() {
         return version;
     }
 
@@ -1088,110 +1085,19 @@ public class OKBlock extends Message {
     public boolean isBIP65() {
         return version >= BLOCK_VERSION_BIP65;
     }
+
+
+
+	@Override
+	public void solve() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	public BigInteger getWork() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 
-
-
-
-/////////////------------------------------------------------------////////////////
-
-
-//public class OKBlock extends Message {
-//	
-//	/**当前Block锚定交易Hash，不参与做持久化*/
-//	private Sha256Hash anchorHash;	//
-//	
-//	public OKBlock(NetworkParameters params, byte[] payloadBytes, int offset, Message parent,
-//			MessageSerializer serializer, int length) throws ProtocolException {
-//		super(params, payloadBytes, offset, parent, serializer, length);
-//		// TODO Auto-generated constructor stub
-//	}
-//
-//	public OKBlock(NetworkParameters params, byte[] payloadBytes, int offset, MessageSerializer serializer, int length)
-//			throws ProtocolException {
-//		super(params, payloadBytes, offset, serializer, length);
-//		// TODO Auto-generated constructor stub
-//	}
-//
-//	public OKBlock(NetworkParameters params, byte[] payloadBytes, MessageSerializer serializer, int length)
-//			throws ProtocolException {
-//		super(params, payloadBytes, serializer, length);
-//		// TODO Auto-generated constructor stub
-//	}
-//	
-//	
-//
-//	/**
-//	 * 构建block
-//	 * @param params	网络参数
-//	 * @param version	版本
-//	 * @param prevBlockHash	上个区块hash	
-//	 * @param merkleRoot	交易merkleroot ，可以为null， 自动通过transactions计算
-//	 * @param prevAnchorHash	上个区块锚定交易hash
-//	 * @param time				时间（单位：秒）
-//	 * @param transactions		交易列表
-//	 */
-//	public OKBlock(NetworkParameters params, int version, Sha256Hash prevBlockHash, Sha256Hash merkleRoot,
-//			Sha256Hash prevAnchorHash, int time, List<Transaction> transactions) {
-//		super(params, version, prevBlockHash, merkleRoot, prevAnchorHash, time, transactions);
-//		// TODO Auto-generated constructor stub
-//	}
-//	
-//	/**
-//	 * 构建block
-//	 * @param params
-//	 * @param version
-//	 * @param prevBlockHash
-//	 * @param prevAnchorHash
-//	 * @param transactions
-//	 */
-//	public OKBlock(NetworkParameters params, int version, Sha256Hash prevBlockHash,
-//			Sha256Hash prevAnchorHash, List<Transaction> transactions) {
-//		this(params, version, prevBlockHash, null, prevAnchorHash, (int)(System.currentTimeMillis()/1000), transactions);
-//		
-//	}
-//	
-//	
-//
-//	@Override
-//	/**
-//	 * 上个Block锚定交易Hash
-//	 */
-//	public Sha256Hash getPrevBlockHash() {
-//		// TODO Auto-generated method stub
-//		return super.getPrevBlockHash();
-//	}
-//
-//	@Override
-//	/**
-//	 * 上个Block锚定交易Hash
-//	 */
-//	public Sha256Hash getPrevAnchorHash() {
-//		// TODO Auto-generated method stub
-//		return super.getPrevAnchorHash();
-//	}
-//
-//	/**
-//	 * 当前Block锚定交易Hash，区别于preAnchorHash, 不参与做持久化
-//	 */
-//	public Sha256Hash getAnchorHash() {
-//		return anchorHash;
-//	}
-//	
-//	/**
-//	 * 当前Block锚定交易Hash，区别于preAnchorHash,不参与做持久化
-//	 */
-//	public void setAnchorHash(Sha256Hash anchorHash) {
-//		this.anchorHash = anchorHash;
-//	}
-//
-//	@Override
-//	public String toString() {
-//		StringBuilder s = new StringBuilder(super.toString());
-//		s.append("\n");
-//		s.append("  current anchor: ");
-//		s.append(this.getAnchorHash());
-//		return s.toString();
-//	}
-//
-//}

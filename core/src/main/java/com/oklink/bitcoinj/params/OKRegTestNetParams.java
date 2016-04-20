@@ -19,6 +19,8 @@ package com.oklink.bitcoinj.params;
 import org.bitcoinj.core.Block;
 import org.bitcoinj.params.MainNetParams;
 
+import com.oklink.bitcoinj.core.OKBlock;
+
 public class OKRegTestNetParams extends OKTestNetParams {
 	private static final long serialVersionUID = 1L;
 
@@ -29,13 +31,13 @@ public class OKRegTestNetParams extends OKTestNetParams {
 		
 	}
 	
-	 private static Block genesis;
+	 private static OKBlock genesis;
 
     @Override
-    public Block getGenesisBlock() {
+    public OKBlock getGenesisBlock() {
         synchronized (OKTestNetParams.class) {
             if (genesis == null) {
-                genesis = super.getGenesisBlock();
+                genesis = (OKBlock)super.getGenesisBlock();
             }
             return genesis;
         }

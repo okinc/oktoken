@@ -47,8 +47,8 @@ public class StoredBlock {
     private BigInteger chainWork;
     private int height;
 
-    public StoredBlock(Block header, BigInteger chainWork, int height) {
-        this.header = header;
+    public StoredBlock(Block block, BigInteger chainWork, int height) {
+        this.header = block;
         this.chainWork = chainWork;
         this.height = height;
     }

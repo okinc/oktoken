@@ -195,7 +195,7 @@ public class CheckpointManager {
             // This is thread safe because the map never changes after creation.
             Map.Entry<Long, StoredBlock> entry = checkpoints.floorEntry(time);
             if (entry != null) return entry.getValue();
-            Block genesis = params.getGenesisBlock().cloneAsHeader();
+            Block genesis = ((Block)params.getGenesisBlock()).cloneAsHeader();
             return new StoredBlock(genesis, genesis.getWork(), 0);
         } catch (VerificationException e) {
             throw new RuntimeException(e);  // Cannot happen.

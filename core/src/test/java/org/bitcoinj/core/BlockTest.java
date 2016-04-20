@@ -56,7 +56,7 @@ public class BlockTest {
 
     @Test
     public void testWork() throws Exception {
-        BigInteger work = PARAMS.getGenesisBlock().getWork();
+        BigInteger work = ((Block)PARAMS.getGenesisBlock()).getWork();
         // This number is printed by Bitcoin Core at startup as the calculated value of chainWork on testnet:
         //
         // SetBestChain: new best=00000007199508e34a9f  height=0  work=536879104
@@ -145,7 +145,7 @@ public class BlockTest {
     @Test
     public void testUpdateLength() {
         NetworkParameters params = UnitTestParams.get();
-        Block block = params.getGenesisBlock().createNextBlockWithCoinbase(Block.BLOCK_VERSION_GENESIS, new ECKey().getPubKey(), Block.BLOCK_HEIGHT_GENESIS);
+        Block block =  ((Block)params.getGenesisBlock()).createNextBlockWithCoinbase(Block.BLOCK_VERSION_GENESIS, new ECKey().getPubKey(), Block.BLOCK_HEIGHT_GENESIS);
         assertEquals(block.bitcoinSerialize().length, block.length);
         final int origBlockLen = block.length;
         Transaction tx = new Transaction(params);
@@ -246,7 +246,7 @@ public class BlockTest {
     @Test
     public void isBIPs() throws Exception {
         final MainNetParams mainnet = MainNetParams.get();
-        final Block genesis = mainnet.getGenesisBlock();
+        final Block genesis = (Block)mainnet.getGenesisBlock();
         assertFalse(genesis.isBIP34());
         assertFalse(genesis.isBIP66());
         assertFalse(genesis.isBIP65());

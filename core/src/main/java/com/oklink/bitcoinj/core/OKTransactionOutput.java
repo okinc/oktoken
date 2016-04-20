@@ -36,7 +36,7 @@ public class OKTransactionOutput extends TransactionOutput {
 	 * @param parent
 	 * @param value
 	 * @param to
-	 * @param superAddr 超级赎回地址
+	 * @param superAddr 
 	 */
 	public OKTransactionOutput(NetworkParameters params, Transaction parent, Coin value, Address to, Address superAddr) {
 		 super(params, parent, value, OKScriptBuilder.createOutputScript(to, superAddr).getProgram());

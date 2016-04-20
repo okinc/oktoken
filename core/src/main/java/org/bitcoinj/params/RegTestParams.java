@@ -52,7 +52,7 @@ public class RegTestParams extends TestNet2Params {
     public Block getGenesisBlock() {
         synchronized (RegTestParams.class) {
             if (genesis == null) {
-                genesis = super.getGenesisBlock();
+                genesis = (Block)super.getGenesisBlock();
                 genesis.setNonce(2);
                 genesis.setDifficultyTarget(0x207fFFFFL);
                 genesis.setTime(1296688602L);
