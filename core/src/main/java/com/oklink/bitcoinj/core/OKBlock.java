@@ -102,6 +102,9 @@ public class OKBlock extends Message {
     private Sha256Hash merkleRoot;
     private Sha256Hash prevAnchorHash;	//上个区块锚定交易hash
     private long time;
+    
+    //当前block锚定hash，不参与hash计算
+    private Sha256Hash anchorHash;	
 
 //    private long difficultyTarget; // "nBits"
 //    private long nonce;
@@ -191,16 +194,15 @@ public class OKBlock extends Message {
     }
 
     /**
-     * Construct a block initialized with all the given fields.
-     * @param params Which network the block is for.
-     * @param version This should usually be set to 1 or 2, depending on if the height is in the coinbase input.
-     * @param prevBlockHash Reference to previous block in the chain or {@link Sha256Hash#ZERO_HASH} if genesis.
-     * @param merkleRoot The root of the merkle tree formed by the transactions.
-     * @param time UNIX time when the block was mined.
-     * @param difficultyTarget Number which this block hashes lower than.
-     * @param nonce Arbitrary number to make the block hash lower than the target.
-     * @param transactions List of transactions including the coinbase.
-     */
+	 * 构建OKBlock
+	 * @param params	网络参数
+	 * @param version	版本
+	 * @param prevBlockHash	上个区块hash	
+	 * @param merkleRoot	交易merkleroot ，可以为null， 自动通过transactions计算
+	 * @param prevAnchorHash	上个区块锚定交易hash
+	 * @param time				时间（单位：秒）
+	 * @param transactions		交易列表
+	 */
     public OKBlock(NetworkParameters params, int version, Sha256Hash prevBlockHash, Sha256Hash merkleRoot, Sha256Hash prevAnchorHash,
     		int time, List<OKTransaction> transactions) {
         super(params);
@@ -212,6 +214,20 @@ public class OKBlock extends Message {
         this.transactions = new LinkedList<OKTransaction>();
         this.transactions.addAll(transactions);
     }
+    
+	/**
+	 * 构建OKBlock
+	 * @param params
+	 * @param version
+	 * @param prevBlockHash
+	 * @param prevAnchorHash
+	 * @param transactions
+	 */
+	public OKBlock(NetworkParameters params, int version, Sha256Hash prevBlockHash,
+			Sha256Hash prevAnchorHash, List<OKTransaction> transactions) {
+		this(params, version, prevBlockHash, null, prevAnchorHash, (int)(System.currentTimeMillis()/1000), transactions);
+		
+	}
 
 
     /**
@@ -814,6 +830,22 @@ public class OKBlock extends Message {
     	this.prevAnchorHash = prevAnchorHash == null ? ZERO_HASH :prevAnchorHash;
     	this.hash = null;
     }
+    
+	/**
+	 * 当前Block锚定交易Hash，区别于preAnchorHash,不参与Hash计算
+	 */
+	public void setAnchorHash(Sha256Hash anchorHash) {
+		this.anchorHash = anchorHash;
+	}
+	
+	/**
+	 * 当前Block锚定交易Hash，区别于preAnchorHash, 不参与Hash计算
+	 */
+	public Sha256Hash getAnchorHash() {
+		return anchorHash;
+	}
+
+	
 
     /**
      * Returns the time at which the block was solved and broadcast, according to the clock of the solving node. This
