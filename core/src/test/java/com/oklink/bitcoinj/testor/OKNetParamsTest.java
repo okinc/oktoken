@@ -1,6 +1,7 @@
 package com.oklink.bitcoinj.testor;
 
 
+import com.oklink.bitcoinj.core.OKBlock;
 import com.oklink.bitcoinj.params.OKMainNetParams;
 import com.oklink.bitcoinj.params.OKTestNetParams;
 import com.oklink.bitcoinj.params.OKRegTestNetParams;
@@ -15,6 +16,7 @@ import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Base58;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.core.Utils;
 import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptBuilder;
@@ -81,9 +83,17 @@ public class OKNetParamsTest {
         
         Address addressTestNet = Address.fromP2SHScript(OKTestNetParams.get(), p2shScript);
         System.out.println(addressTestNet.toString());
-        assertTrue(addressTestNet.toString().startsWith("4"));
-        
-        
+        assertTrue(addressTestNet.toString().startsWith("4"));    
+	}
+	
+	@Test
+	public void testTestNetGenesisBlock(){
+		NetworkParameters params = OKTestNetParams.get();
+		OKBlock genesisBlock = (OKBlock)params.getGenesisBlock();
+		System.out.println(genesisBlock.toString());
+		assertEquals(genesisBlock.getHashAsString(), "be9219c0ddeaacc2a63beb2e3bd85706f2eea1299a1bd199d8568b77ebcf8c15");
+		System.out.println(genesisBlock.getAnchorHash().toString());
+		assertEquals(genesisBlock.getAnchorHash().toString(), "ddaca03074fc9c882ead5fb19515aa4fb4c21fbc5bb10ee1ad7493b7ce90142f");
 	}
 
 	

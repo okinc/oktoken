@@ -669,7 +669,7 @@ public class Transaction extends ChildMessage {
             }
             s.append("     == COINBASE TXN (scriptSig ").append(script)
                 .append(")  (scriptPubKey ").append(script2).append(")\n");
-            return s.toString();
+//            return s.toString();
         }
         for (TransactionInput in : inputs) {
             s.append("     ");

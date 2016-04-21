@@ -209,7 +209,8 @@ public class OKBlock extends Message implements BlockInf{
         this.prevAnchorHash = prevAnchorHash == null ? ZERO_HASH : prevAnchorHash;
         this.time = time;
         this.transactions = new LinkedList<OKTransaction>();
-        this.transactions.addAll(transactions);
+        if(transactions != null)
+        	this.transactions.addAll(transactions);
     }
     
 	/**
@@ -506,12 +507,13 @@ public class OKBlock extends Message implements BlockInf{
         s.append("   previous block: ").append(getPrevBlockHash()).append("\n");
         s.append("   merkle root: ").append(getMerkleRoot()).append("\n");
         s.append("   previous anchor: ").append(getPrevAnchorHash()).append("\n");
+        s.append("   current anchor:[ ").append(getAnchorHash()).append(" ](not wraped by hash)\n");
         s.append("   time: ").append(time).append(" (").append(Utils.dateTimeFormat((long)time * 1000L)).append(")\n");
        
         if (transactions != null && transactions.size() > 0) {
             s.append("   with ").append(transactions.size()).append(" transaction(s):\n");
-            for (Transaction tx : transactions) {
-                s.append(tx);
+            for (OKTransaction tx : transactions) {
+                s.append(tx.toString());
             }
         }
         return s.toString();

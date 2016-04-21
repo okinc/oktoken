@@ -24,33 +24,33 @@ import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionInput;
 import org.bitcoinj.core.TransactionOutPoint;
 
-public class OKTransatcionInput extends TransactionInput {
+public class OKTransactionInput extends TransactionInput {
 
-	public OKTransatcionInput(NetworkParameters params, Transaction parentTransaction, byte[] payload, int offset,
+	public OKTransactionInput(NetworkParameters params, Transaction parentTransaction, byte[] payload, int offset,
 			MessageSerializer serializer) throws ProtocolException {
 		super(params, parentTransaction, payload, offset, serializer);
 		// TODO Auto-generated constructor stub
 	}
 
-	public OKTransatcionInput(NetworkParameters params, Transaction parentTransaction, byte[] payload, int offset)
+	public OKTransactionInput(NetworkParameters params, Transaction parentTransaction, byte[] payload, int offset)
 			throws ProtocolException {
 		super(params, parentTransaction, payload, offset);
 		// TODO Auto-generated constructor stub
 	}
 
-	public OKTransatcionInput(NetworkParameters params, Transaction parentTransaction, byte[] scriptBytes,
+	public OKTransactionInput(NetworkParameters params, Transaction parentTransaction, byte[] scriptBytes,
 			TransactionOutPoint outpoint, Coin value) {
 		super(params, parentTransaction, scriptBytes, outpoint, value);
 		// TODO Auto-generated constructor stub
 	}
 
-	public OKTransatcionInput(NetworkParameters params, Transaction parentTransaction, byte[] scriptBytes,
+	public OKTransactionInput(NetworkParameters params, Transaction parentTransaction, byte[] scriptBytes,
 			TransactionOutPoint outpoint) {
 		super(params, parentTransaction, scriptBytes, outpoint);
 		// TODO Auto-generated constructor stub
 	}
 
-	public OKTransatcionInput(NetworkParameters params, Transaction parentTransaction, byte[] scriptBytes) {
+	public OKTransactionInput(NetworkParameters params, Transaction parentTransaction, byte[] scriptBytes) {
 		super(params, parentTransaction, scriptBytes);
 		// TODO Auto-generated constructor stub
 	}

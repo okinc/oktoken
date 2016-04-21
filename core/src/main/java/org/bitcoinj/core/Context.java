@@ -14,6 +14,7 @@
 
 package org.bitcoinj.core;
 
+import org.bitcoinj.net.NioClientManager;
 import org.slf4j.*;
 
 import static com.google.common.base.Preconditions.*;
@@ -80,7 +81,7 @@ public class Context {
     private static volatile Context lastConstructed;
     private static boolean isStrictMode;
     private static final ThreadLocal<Context> slot = new ThreadLocal<Context>();
-
+  
     /**
      * Returns the current context that is associated with the <b>calling thread</b>. BitcoinJ is an API that has thread
      * affinity: much like OpenGL it expects each thread that accesses it to have been configured with a global Context

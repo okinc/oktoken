@@ -286,4 +286,11 @@ public class BlockTest {
         assertTrue(block370661.isBIP66());
         assertTrue(block370661.isBIP65());
     }
+    
+    @Test
+    public void testGenesisBlock(){
+    	  final MainNetParams mainnet = MainNetParams.get();
+          final Block genesis = (Block)mainnet.getGenesisBlock();
+          System.out.println(genesis.toString());
+    }
 }

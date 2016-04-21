@@ -25,30 +25,30 @@ import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionOutPoint;
 import org.bitcoinj.core.TransactionOutput;
 
-public class OKTransactionOutputPoint extends TransactionOutPoint {
+public class OKTransactionOutPoint extends TransactionOutPoint {
 
-	public OKTransactionOutputPoint(NetworkParameters params, byte[] payload, int offset, Message parent,
+	public OKTransactionOutPoint(NetworkParameters params, byte[] payload, int offset, Message parent,
 			MessageSerializer serializer) throws ProtocolException {
 		super(params, payload, offset, parent, serializer);
 		// TODO Auto-generated constructor stub
 	}
 
-	public OKTransactionOutputPoint(NetworkParameters params, byte[] payload, int offset) throws ProtocolException {
+	public OKTransactionOutPoint(NetworkParameters params, byte[] payload, int offset) throws ProtocolException {
 		super(params, payload, offset);
 		// TODO Auto-generated constructor stub
 	}
 
-	public OKTransactionOutputPoint(NetworkParameters params, long index, Sha256Hash hash) {
+	public OKTransactionOutPoint(NetworkParameters params, long index, Sha256Hash hash) {
 		super(params, index, hash);
 		// TODO Auto-generated constructor stub
 	}
 
-	public OKTransactionOutputPoint(NetworkParameters params, long index, Transaction fromTx) {
+	public OKTransactionOutPoint(NetworkParameters params, long index, Transaction fromTx) {
 		super(params, index, fromTx);
 		// TODO Auto-generated constructor stub
 	}
 
-	public OKTransactionOutputPoint(NetworkParameters params, TransactionOutput connectedOutput) {
+	public OKTransactionOutPoint(NetworkParameters params, TransactionOutput connectedOutput) {
 		super(params, connectedOutput);
 		// TODO Auto-generated constructor stub
 	}

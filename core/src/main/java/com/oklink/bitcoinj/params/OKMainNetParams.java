@@ -19,6 +19,7 @@ package com.oklink.bitcoinj.params;
 
 import org.bitcoinj.core.Block;
 import org.bitcoinj.core.BlockInf;
+import org.bitcoinj.core.Context;
 import org.bitcoinj.core.Utils;
 import org.bitcoinj.params.MainNetParams;
 
@@ -47,6 +48,8 @@ public class OKMainNetParams extends OKAbstractNetParams {
 		packetMagic = 0x4f4b544bL; //oktk
 		//接受地址版本号！
 		acceptableAddressCodes = new int[] { addressHeader, p2shHeader };
+		
+		Context context = new Context(this);
 	}
 	
 	 private static OKBlock genesis;

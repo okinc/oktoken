@@ -21,8 +21,11 @@ import static org.bitcoinj.script.ScriptOpCodes.*;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.ScriptException;
+import org.bitcoinj.core.Utils;
 import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptBuilder;
+
+import com.oklink.bitcoinj.params.OKTestNetParams;
 
 public class OKScriptBuilder extends ScriptBuilder{
 
@@ -61,6 +64,18 @@ public class OKScriptBuilder extends ScriptBuilder{
 	   	return builder;
 	}
 	
+	/**
+	 * 创建锚定脚本
+	 * @param data 写到锚定tx的数据
+	 * @return
+	 */
+	public static Script createAnchorOpReturn(byte[] data){
+		Script anchorOpReturn = new ScriptBuilder().op(OP_RETURN)
+				.data(OKTestNetParams.ANACHOR_FIX_FLAG)
+				.data(data)
+				.build();
+		return anchorOpReturn;
+	}
 	
 
 	/** 

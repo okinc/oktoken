@@ -18,6 +18,7 @@ public abstract class OKAbstractNetParams extends AbstractBitcoinNetParams {
      */
     public static final String BITCOIN_SCHEME = "oktoken";
     public static final Coin MAX_MONEY = COIN.multiply(Integer.MAX_VALUE);
+    public static final byte[]  ANACHOR_FIX_FLAG = {0x4f, 0x4b, 0x54};	//锚定OP_RETURE中的前缀 (OKT)
 
     protected OKBlock genesisBlock;
     
