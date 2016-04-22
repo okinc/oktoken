@@ -50,7 +50,7 @@ public class OKSuperKey {
 	
 	///!> 最低签名下限
 	private static final int SIG_THRESHOLD	= 2;
-	
+	//
 	///!>超级公钥（HEX）
 	public static final List<ECKey> SUPER_KEYS_PUBLIC_ONLY = Arrays.asList(
 			ECKey.fromPublicOnly(Utils.HEX.decode("03e2aab13e88f47caa71b44e6b48145e4946066470bc0b45d71d5a3e4ca6873887")),
@@ -58,6 +58,7 @@ public class OKSuperKey {
 			ECKey.fromPublicOnly(Utils.HEX.decode("0368f5c539ace3b90b9c655e9cdb8a3ec8c0df6a03d80f9878339a10bb55c17632"))
 	);
 	
+	//
 	///!>超级私钥(HEX)。 ！！！仅为测试，不应在此公开的！！！
 	public static final List<ECKey> SUPER_KEYS = Arrays.asList(
 			ECKey.fromPrivate(Utils.HEX.decode("fc7201864c7f5e8556984ba921114de65b37642cc2c7b151304511b32123b052")),
@@ -66,7 +67,7 @@ public class OKSuperKey {
 		);
 	
 	
-	private static Script superP2SHScript = OKScriptBuilder.createP2SHOutputScript(SIG_THRESHOLD, SUPER_KEYS_PUBLIC_ONLY);
+	public static Script superP2SHScript = OKScriptBuilder.createP2SHOutputScript(SIG_THRESHOLD, SUPER_KEYS_PUBLIC_ONLY);
 	private static Address addressMainNet = Address.fromP2SHScript(OKMainNetParams.get(), superP2SHScript);
 	private static Address addressTestNet = Address.fromP2SHScript(OKTestNetParams.get(), superP2SHScript);
 	

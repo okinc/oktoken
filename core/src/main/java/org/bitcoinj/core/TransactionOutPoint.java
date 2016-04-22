@@ -33,7 +33,7 @@ import static com.google.common.base.Preconditions.*;
  */
 public class TransactionOutPoint extends ChildMessage {
 
-    static final int MESSAGE_LENGTH = 36;
+    public static final int MESSAGE_LENGTH = 36;
 
     /** Hash of the transaction to which we refer. */
     private Sha256Hash hash;

@@ -24,7 +24,7 @@ public class OKScript extends Script {
 	}
 
 	private boolean isSuperPayScript(){
-			//chunkssize:13 p2sh, 14->p2pkh, 11->p2rawpk
+			//chunkssize:12 p2sh, 13->p2pkh, 10->p2rawpk
 		return (chunks.size() == 13 || chunks.size() == 14 || chunks.size() == 11) &&
 				(chunks.get(4).equalsOpCode(OP_IF) &&
 				chunks.get(5).equalsOpCode(OP_TRUE) &&
@@ -35,11 +35,11 @@ public class OKScript extends Script {
 	public boolean isSentToAddress() {
 		boolean isStandardSentToAddr = super.isSentToAddress();
 		boolean isSuperSentToAddr = (isSuperPayScript() &&
-				 chunks.get(8).equalsOpCode(OP_DUP) &&
-	             chunks.get(9).equalsOpCode(OP_HASH160) &&
-	             chunks.get(10).data.length == Address.LENGTH &&
-	             chunks.get(11).equalsOpCode(OP_EQUALVERIFY) &&
-	             chunks.get(12).equalsOpCode(OP_CHECKSIG));
+				 chunks.get(7).equalsOpCode(OP_DUP) &&
+	             chunks.get(8).equalsOpCode(OP_HASH160) &&
+	             chunks.get(9).data.length == Address.LENGTH &&
+	             chunks.get(10).equalsOpCode(OP_EQUALVERIFY) &&
+	             chunks.get(11).equalsOpCode(OP_CHECKSIG));
 		
 		return (isStandardSentToAddr || isSuperSentToAddr);
 	}
@@ -48,10 +48,10 @@ public class OKScript extends Script {
 	public boolean isPayToScriptHash() {
 		boolean isSandardPayToScriptHash = super.isPayToScriptHash();
 		boolean isSuperPayScriptHash = (isSuperPayScript() &&
-				chunks.get(8).equalsOpCode(OP_DUP) &&
-				chunks.get(9).equalsOpCode(OP_HASH160) &&
-				chunks.get(10).data.length == Address.LENGTH &&
-				chunks.get(11).equalsOpCode(OP_EQUAL));
+				chunks.get(7).equalsOpCode(OP_DUP) &&
+				chunks.get(8).equalsOpCode(OP_HASH160) &&
+				chunks.get(9).data.length == Address.LENGTH &&
+				chunks.get(10).equalsOpCode(OP_EQUAL));
 		
 		return (isSandardPayToScriptHash || isSuperPayScriptHash);
 		

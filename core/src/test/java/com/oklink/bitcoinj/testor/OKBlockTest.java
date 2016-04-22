@@ -44,6 +44,7 @@ public class OKBlockTest {
 		System.out.println(coinbaseTx.getHashAsString());
 		
 		OKBlock block = new OKBlock(params, 1, Sha256Hash.ZERO_HASH, Sha256Hash.ZERO_HASH, null);
+		block.setTime(1461240965L);
 		block.addTransaction(coinbaseTx);
 		System.out.println(block.toString());
 		System.out.println(Utils.HEX.encode(block.bitcoinSerialize()));

@@ -22,13 +22,18 @@ import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.MessageSerializer;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.ProtocolException;
+import org.bitcoinj.core.ScriptException;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionOutput;
+import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptBuilder;
 
+import com.oklink.bitcoinj.script.OKScript;
 import com.oklink.bitcoinj.script.OKScriptBuilder;
 
 public class OKTransactionOutput extends TransactionOutput {
+	
+	  private Script scriptPubKey;
 
 	/**
 	 * 
@@ -42,6 +47,33 @@ public class OKTransactionOutput extends TransactionOutput {
 		 super(params, parent, value, OKScriptBuilder.createOutputScript(to, superAddr).getProgram());
 	}
 	
+	public OKTransactionOutput(NetworkParameters params, Transaction parent, byte[] payload, int offset,
+			MessageSerializer serializer) throws ProtocolException {
+		super(params, parent, payload, offset, serializer);
+		// TODO Auto-generated constructor stub
+	}
+
+	public OKTransactionOutput(NetworkParameters params, Transaction parent, byte[] payload, int offset)
+			throws ProtocolException {
+		super(params, parent, payload, offset);
+		// TODO Auto-generated constructor stub
+	}
+
+	public OKTransactionOutput(NetworkParameters params, Transaction parent, Coin value, Address to) {
+		super(params, parent, value, to);
+		// TODO Auto-generated constructor stub
+	}
+
+	public OKTransactionOutput(NetworkParameters params, Transaction parent, Coin value, byte[] scriptBytes) {
+		super(params, parent, value, scriptBytes);
+		// TODO Auto-generated constructor stub
+	}
+
+	public OKTransactionOutput(NetworkParameters params, Transaction parent, Coin value, ECKey to) {
+		super(params, parent, value, to);
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * 
 	 * @param params
@@ -52,6 +84,15 @@ public class OKTransactionOutput extends TransactionOutput {
 	 */
 	public OKTransactionOutput(NetworkParameters params, Transaction parent, Coin value, ECKey to, Address superAddr) {
 		 super(params, parent, value, OKScriptBuilder.createOutputScript(to, superAddr).getProgram());
+	}
+
+	
+	@Override
+	public Script getScriptPubKey() throws ScriptException {
+		 if (scriptPubKey == null) {
+	            scriptPubKey = new OKScript(getScriptBytes());
+	     }
+	     return scriptPubKey;
 	}
 	
 	

@@ -41,7 +41,20 @@ public class OKScriptBuilder extends ScriptBuilder{
 	public Script build() {
 		return  new OKScript(chunks);
 	}
-	 
+	
+	/**
+	 * 创建锚定脚本
+	 * @param data 写到锚定tx的数据
+	 * @return
+	 */
+	public static Script createAnchorOpReturn(byte[] data){
+		Script anchorOpReturn = new ScriptBuilder().op(OP_RETURN)
+				.data(OKTestNetParams.ANACHOR_FIX_FLAG)
+				.data(data)
+				.build();
+		return anchorOpReturn;
+	}
+	
 	 
 	/**
 	 * 超级赎回脚本
@@ -58,24 +71,11 @@ public class OKScriptBuilder extends ScriptBuilder{
 	    //流判断
 	    builder.op(OP_IF)
 	   		.op(OP_TRUE)
-	   	.op(OP_ELSE)
-	   		.op(OP_DROP);
+	   		.op(OP_ELSE);
 	   	
 	   	return builder;
 	}
 	
-	/**
-	 * 创建锚定脚本
-	 * @param data 写到锚定tx的数据
-	 * @return
-	 */
-	public static Script createAnchorOpReturn(byte[] data){
-		Script anchorOpReturn = new ScriptBuilder().op(OP_RETURN)
-				.data(OKTestNetParams.ANACHOR_FIX_FLAG)
-				.data(data)
-				.build();
-		return anchorOpReturn;
-	}
 	
 
 	/** 
@@ -87,12 +87,12 @@ public class OKScriptBuilder extends ScriptBuilder{
         ScriptBuilder builder = createWithSuperRedeem(superAddr);
     	
     	//正常赎回脚本
-    	if (toAddr.isP2SHAddress()) {	//chunck.size = 14
+    	if (toAddr.isP2SHAddress()) {	//chunck.size = 13
             // OP_HASH160 <scriptHash> OP_EQUAL
                 builder.op(OP_HASH160)
                 .data(toAddr.getHash160())
                 .op(OP_EQUAL);
-        } else {						//chunks.size = 13
+        } else {						//chunks.size = 12
             // OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
         	    builder.op(OP_DUP)
                 .op(OP_HASH160)
@@ -100,6 +100,7 @@ public class OKScriptBuilder extends ScriptBuilder{
                 .op(OP_EQUALVERIFY)
                 .op(OP_CHECKSIG);
         }
+    	builder.op(OP_ENDIF);
     	
     	return builder.build();
     }

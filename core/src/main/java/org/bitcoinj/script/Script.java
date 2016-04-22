@@ -866,7 +866,6 @@ public class Script {
         
         LinkedList<byte[]> altstack = new LinkedList<byte[]>();
         LinkedList<Boolean> ifStack = new LinkedList<Boolean>();
-        
         for (ScriptChunk chunk : script.chunks) {
             boolean shouldExecute = !ifStack.contains(false);
 

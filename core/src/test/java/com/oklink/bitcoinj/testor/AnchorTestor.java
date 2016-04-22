@@ -81,13 +81,15 @@ public class AnchorTestor {
 		
 		TransactionOutPoint outpoint = new TransactionOutPoint(PARAMS, 1, fromTx);
 		TransactionInput input = new TransactionInput(PARAMS, tx, new byte[]{}, outpoint);
-		tx.addInput(input);
+//		tx.addInput(input);
 		//构建签名，（只有一一个input）
 		ECKey ecKey =  ECKey.fromPrivate(privKey);
-		TransactionSignature signature = tx.calculateSignature(0,ecKey, outpoint.getConnectedPubKeyScript(), SigHash.ALL, false);
-		System.out.println(ecKey.getPublicKeyAsHex());
-		input.setScriptSig(ScriptBuilder.createInputScript(signature, ecKey));
+		tx.addSignedInput(fromTx.getOutput(1), ecKey);
 		
+//		TransactionSignature signature = tx.calculateSignature(0,ecKey, outpoint.getConnectedPubKeyScript(), SigHash.ALL, false);
+//		System.out.println(ecKey.getPublicKeyAsHex());
+//		input.setScriptSig(ScriptBuilder.createInputScript(signature, ecKey));
+//		
 		System.out.println(tx.toString());
 		System.out.println(Utils.HEX.encode(tx.bitcoinSerialize()));
 		

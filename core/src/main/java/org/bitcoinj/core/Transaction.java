@@ -113,20 +113,20 @@ public class Transaction extends ChildMessage {
     public static final Coin MIN_NONDUST_OUTPUT = Coin.valueOf(2730); // satoshis
 
     // These are bitcoin serialized.
-    private long version;
-    private ArrayList<TransactionInput> inputs;
-    private ArrayList<TransactionOutput> outputs;
+    protected long version;
+    protected ArrayList<TransactionInput> inputs;
+    protected ArrayList<TransactionOutput> outputs;
 
-    private long lockTime;
+    protected long lockTime;
 
     // This is either the time the transaction was broadcast as measured from the local clock, or the time from the
     // block in which it was included. Note that this can be changed by re-orgs so the wallet may update this field.
     // Old serialized transactions don't have this field, thus null is valid. It is used for returning an ordered
     // list of transactions from a wallet, which is helpful for presenting to users.
-    private Date updatedAt;
+    protected Date updatedAt;
 
     // This is an in memory helper only.
-    private Sha256Hash hash;
+    protected Sha256Hash hash;
 
     // Data about how confirmed this tx is. Serialized, may be null.
     @Nullable private TransactionConfidence confidence;
@@ -145,7 +145,7 @@ public class Transaction extends ChildMessage {
     // MAX_BLOCK_SIZE must be compared to the optimal encoding, not the actual encoding, so when parsing, we keep track
     // of the size of the ideal encoding in addition to the actual message size (which Message needs) so that Blocks
     // can properly keep track of optimal encoded size
-    private int optimalEncodingMessageSize;
+    protected int optimalEncodingMessageSize;
 
     /**
      * This enum describes the underlying reason the transaction was created. It's useful for rendering wallet GUIs
