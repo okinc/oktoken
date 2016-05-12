@@ -85,7 +85,6 @@ public class AnchorTestor {
 		//构建签名，（只有一一个input）
 		ECKey ecKey =  ECKey.fromPrivate(privKey);
 		tx.addSignedInput(fromTx.getOutput(1), ecKey);
-		
 //		TransactionSignature signature = tx.calculateSignature(0,ecKey, outpoint.getConnectedPubKeyScript(), SigHash.ALL, false);
 //		System.out.println(ecKey.getPublicKeyAsHex());
 //		input.setScriptSig(ScriptBuilder.createInputScript(signature, ecKey));

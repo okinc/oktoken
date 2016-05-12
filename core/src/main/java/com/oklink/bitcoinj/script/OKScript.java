@@ -24,8 +24,8 @@ public class OKScript extends Script {
 	}
 
 	private boolean isSuperPayScript(){
-			//chunkssize:12 p2sh, 13->p2pkh, 10->p2rawpk
-		return (chunks.size() == 13 || chunks.size() == 14 || chunks.size() == 11) &&
+			//chunkssize:11 p2sh, 13->p2pkh, 10->p2rawpk
+		return (chunks.size() == 13 || chunks.size() == 11 || chunks.size() == 10) &&
 				(chunks.get(4).equalsOpCode(OP_IF) &&
 				chunks.get(5).equalsOpCode(OP_TRUE) &&
 				chunks.get(6).equalsOpCode(OP_ELSE));
@@ -48,10 +48,10 @@ public class OKScript extends Script {
 	public boolean isPayToScriptHash() {
 		boolean isSandardPayToScriptHash = super.isPayToScriptHash();
 		boolean isSuperPayScriptHash = (isSuperPayScript() &&
-				chunks.get(7).equalsOpCode(OP_DUP) &&
-				chunks.get(8).equalsOpCode(OP_HASH160) &&
-				chunks.get(9).data.length == Address.LENGTH &&
-				chunks.get(10).equalsOpCode(OP_EQUAL));
+				chunks.get(7).equalsOpCode(OP_HASH160) &&
+				chunks.get(8).data.length == Address.LENGTH &&
+				chunks.get(9).equalsOpCode(OP_EQUAL)) && 
+				chunks.get(10).equalsOpCode(OP_ENDIF);
 		
 		return (isSandardPayToScriptHash || isSuperPayScriptHash);
 		
@@ -76,8 +76,10 @@ public class OKScript extends Script {
 	@Override
 	public byte[] getPubKeyHash() throws ScriptException {
 		if(isSuperPayScript()){
-			if(isSentToAddress() || isPayToScriptHash()){
-				return chunks.get(10).data;
+			if(isSentToAddress()){
+				return chunks.get(9).data;
+			}else if(isPayToScriptHash()){
+				return chunks.get(8).data;
 			}
 		}else{
 			if (isSentToAddress())
@@ -91,13 +93,13 @@ public class OKScript extends Script {
 
 	@Override
 	public byte[] getPubKey() throws ScriptException {
-		//chunkssize = 2 标准； chunkssize=11 super script
+		//chunkssize = 2 标准； chunkssize=10 super script
 		if (chunks.size() == 2) {
             return super.getPubKey();
-        }else if(chunks.size() == 11){
-        	 final ScriptChunk chunk0 = chunks.get(8);
+        }else if(chunks.size() == 10){
+        	 final ScriptChunk chunk0 = chunks.get(7);
              final byte[] chunk0data = chunk0.data;
-             final ScriptChunk chunk1 = chunks.get(9);
+             final ScriptChunk chunk1 = chunks.get(8);
 //             final byte[] chunk1data = chunk1.data;
              if (chunk1.equalsOpCode(OP_CHECKSIG) && chunk0data != null && chunk0data.length > 2) {
                  // A large constant followed by an OP_CHECKSIG is the key.

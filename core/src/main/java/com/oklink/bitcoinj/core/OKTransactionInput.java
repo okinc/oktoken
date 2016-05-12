@@ -16,6 +16,7 @@
 
 package com.oklink.bitcoinj.core;
 
+import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.MessageSerializer;
 import org.bitcoinj.core.NetworkParameters;
@@ -54,5 +55,6 @@ public class OKTransactionInput extends TransactionInput {
 		super(params, parentTransaction, scriptBytes);
 		// TODO Auto-generated constructor stub
 	}
+	
 
 }

@@ -38,7 +38,7 @@ public class OKScriptBuilder extends ScriptBuilder{
 	}
 
 	@Override
-	public Script build() {
+	public OKScript build() {
 		return  new OKScript(chunks);
 	}
 	
@@ -61,11 +61,11 @@ public class OKScriptBuilder extends ScriptBuilder{
 	 * @param superAddr 超级私钥地址 （多签赎回脚本->base58地址）
 	 * @return
 	 */
-	private static ScriptBuilder createWithSuperRedeem(Address superAddr) throws ScriptException{
+	private static OKScriptBuilder createWithSuperRedeem(Address superAddr) throws ScriptException{
 		if(!superAddr.isP2SHAddress())
        	 	throw new ScriptException("Super Address must be a multi-sig address.");
    	
-	   	ScriptBuilder builder = new ScriptBuilder();
+	   	OKScriptBuilder builder = new OKScriptBuilder();
 	       //超级赎回脚本
 	    builder.op(OP_DUP).op(OP_HASH160).data(superAddr.getHash160()).op(OP_EQUAL);
 	    //流判断
@@ -83,8 +83,8 @@ public class OKScriptBuilder extends ScriptBuilder{
 	  * toAddr 支付目标地址
 	  * superAddr 超级私钥地址 （多签赎回脚本->base58地址）
 	  */
-    public static Script createOutputScript(Address toAddr, Address superAddr) throws ScriptException{
-        ScriptBuilder builder = createWithSuperRedeem(superAddr);
+    public static OKScript createOutputScript(Address toAddr, Address superAddr) throws ScriptException{
+        OKScriptBuilder builder = createWithSuperRedeem(superAddr);
     	
     	//正常赎回脚本
     	if (toAddr.isP2SHAddress()) {	//chunck.size = 13
@@ -110,9 +110,10 @@ public class OKScriptBuilder extends ScriptBuilder{
      *  key 支付目标raw公钥
      *  superAddr 超级私钥对应地址（多签赎回脚本->base58地址）
      */
-    public static Script createOutputScript(ECKey key, Address superAddr) throws ScriptException {
-    	ScriptBuilder builder = createWithSuperRedeem(superAddr);
+    public static OKScript createOutputScript(ECKey key, Address superAddr) throws ScriptException {
+    	OKScriptBuilder builder = createWithSuperRedeem(superAddr);
         
-    	return builder.data(key.getPubKey()).op(OP_CHECKSIG).build();	//chuncks.size = 11
+    	builder.data(key.getPubKey()).op(OP_CHECKSIG);	//chuncks.size = 10
+    	return builder.build();
     }
 }

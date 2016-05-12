@@ -146,7 +146,14 @@ public class ScriptTest {
 
         // Create p2sh multisig input script
         Script inputScript = ScriptBuilder.createP2SHMultiSigInputScript(ImmutableList.of(party1TransactionSignature, party2TransactionSignature), multisigScript);
-
+        System.out.println(inputScript);
+        try{
+        	spendTx.getInput(0).setScriptSig(inputScript);
+        	spendTx.getInput(0).verify();
+        }catch(Exception e){
+        	
+        }
+        
         // Assert that the input script contains 4 chunks
         assertTrue(inputScript.getChunks().size() == 4);
 

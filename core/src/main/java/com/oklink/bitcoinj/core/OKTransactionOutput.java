@@ -16,6 +16,8 @@
 
 package com.oklink.bitcoinj.core;
 
+import java.util.Arrays;
+
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.ECKey;
@@ -30,6 +32,7 @@ import org.bitcoinj.script.ScriptBuilder;
 
 import com.oklink.bitcoinj.script.OKScript;
 import com.oklink.bitcoinj.script.OKScriptBuilder;
+import com.oklink.bitcoinj.script.OKSuperKey;
 
 public class OKTransactionOutput extends TransactionOutput {
 	
@@ -95,9 +98,46 @@ public class OKTransactionOutput extends TransactionOutput {
 	     return scriptPubKey;
 	}
 	
-	
-	
+	/**
+	 * get target address
+	 */
+	 public Address getTargetAddress(){
+		 OKScript scriptPubKey = (OKScript) getScriptPubKey();
+		 return scriptPubKey.getToAddress(this.params, true);
+	 }
+	 
+	 /**
+	  * 是否OP_RETURN输出
+	  */
+	public boolean isOpReturn(){
+		return getScriptPubKey().isOpReturn();
+	}
 
+	/**
+	 * OP_RETURN 携带数据
+	 * @return
+	 */
+	public byte[] getOpReturnBytes(){
+		OKScript scriptPubKey = (OKScript) getScriptPubKey();
+		if(scriptPubKey.isOpReturn() && scriptPubKey.getChunks().size() >= 3){
+			return scriptPubKey.getChunks().get(2).data;
+		}else{
+			return new byte[]{};
+		}
+	}
 	
+	
+	/**
+	 * 是否为销毁输出（输出到一个未知私钥地址）
+	 */
+	public boolean isToDestroy(){
+		OKScript scriptPubKey = (OKScript) getScriptPubKey();
+		if(scriptPubKey == null || scriptPubKey.isOpReturn()){
+			return false;
+		}else{
+			byte[] hash160 = scriptPubKey.getPubKeyHash();
+			return Arrays.equals(OKSuperKey.DestoryRimple160, hash160);
+		}
+	}
 
 }

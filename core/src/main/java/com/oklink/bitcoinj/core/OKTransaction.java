@@ -18,6 +18,7 @@ package com.oklink.bitcoinj.core;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Block;
@@ -132,6 +133,10 @@ public class OKTransaction extends Transaction {
 	        optimalEncodingMessageSize += 4;
 	        length = cursor - offset;
 	}
+
+	
+
+	
 
 	
 	
