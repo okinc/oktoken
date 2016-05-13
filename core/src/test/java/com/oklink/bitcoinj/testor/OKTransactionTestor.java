@@ -51,6 +51,7 @@ public class OKTransactionTestor {
 		
 		try{
 			newTx.verify();
+			newTx.verifySuperPublicKey( OKSuperKey.superKeyAddress(params));
 			newTx.getInput(0).verify();
 		}catch(Exception e){
 			e.printStackTrace();

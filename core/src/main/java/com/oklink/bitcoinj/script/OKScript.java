@@ -22,6 +22,8 @@ public class OKScript extends Script {
 	public OKScript(List<ScriptChunk> chunks) {
 		super(chunks);
 	}
+	
+	
 
 	private boolean isSuperPayScript(){
 			//chunkssize:11 p2sh, 13->p2pkh, 10->p2rawpk
@@ -112,6 +114,25 @@ public class OKScript extends Script {
         }
 	}
 	
+	/**
+	 * 是否允许超级赎回
+	 * @return
+	 */
+	public boolean allowSuperRedeem() {
+		return isSuperPayScript();
+	}
+	
+	/**
+	 * 超级"公钥"
+	 * @return
+	 */
+	public byte[] getSuperPubKey() throws ScriptException {
+		if(allowSuperRedeem()){
+			return chunks.get(2).data;
+		}else{
+			throw new ScriptException("Script has not a super redeem script.");
+		}
+	}
 	
 	
 	

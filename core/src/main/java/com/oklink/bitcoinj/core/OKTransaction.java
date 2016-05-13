@@ -17,6 +17,7 @@
 package com.oklink.bitcoinj.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -35,6 +36,7 @@ import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.core.VarInt;
 import org.bitcoinj.core.VerificationException;
 
+import com.oklink.bitcoinj.script.OKScript;
 import com.oklink.bitcoinj.script.OKSuperKey;
 
 
@@ -134,10 +136,42 @@ public class OKTransaction extends Transaction {
 	        length = cursor - offset;
 	}
 
+	/**
+	 * 校验TX超级赎回地址是否为指定公钥地址
+	 * @param superPubHash160 : hash160 bytes
+	 */
+	public void verifySuperPublicKey(byte[] superPubHash160) throws VerificationException{
+		try {
+			 for (TransactionOutput output : outputs) {
+				 OKScript pubScript = (OKScript) output.getScriptPubKey();
+				 System.out.println(pubScript);
+				 if(pubScript.allowSuperRedeem()){
+					if(!Arrays.equals(pubScript.getSuperPubKey(), superPubHash160)){
+						throw new OKVerificationException.UnexpectedSuperPublicKey();
+					}
+				 }
+				 
+			 }
+		} catch (IllegalArgumentException e) {
+            throw new VerificationException.ExcessiveValue();
+        }
+	}
 	
-
+	/**
+	 * 校验TX超级赎回地址是否为指定公钥地址
+	 * @param superPubAddress 
+	 */
+	public void verifySuperPublicKey(Address superPubAddress) throws VerificationException{
+		verifySuperPublicKey(superPubAddress.getHash160());
+	}
 	
-
+	/**
+	 * 校验TX超级赎回地址是否为指定公钥地址
+	 * @param superPubBase58 : base58编码地址
+	 */
+	public void verifySuperPublicKey(String superPubBase58) throws VerificationException{
+		verifySuperPublicKey(Address.fromBase58(this.getParams(), superPubBase58));
+	}
 	
 	
 	
