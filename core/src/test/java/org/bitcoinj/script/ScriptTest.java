@@ -139,8 +139,8 @@ public class ScriptTest {
         spendTx.addOutput(output.getValue(), outputScript);
         spendTx.addInput(output);
         Sha256Hash sighash = spendTx.hashForSignature(0, multisigScript, SigHash.ALL, false);
-        ECKey.ECDSASignature party1Signature = key1.sign(sighash);
-        ECKey.ECDSASignature party2Signature = key2.sign(sighash);
+        ECKey.ECDSASignature party1Signature = key3.sign(sighash);
+        ECKey.ECDSASignature party2Signature = key3.sign(sighash);
         TransactionSignature party1TransactionSignature = new TransactionSignature(party1Signature, SigHash.ALL, false);
         TransactionSignature party2TransactionSignature = new TransactionSignature(party2Signature, SigHash.ALL, false);
 
@@ -151,7 +151,8 @@ public class ScriptTest {
         	spendTx.getInput(0).setScriptSig(inputScript);
         	spendTx.getInput(0).verify();
         }catch(Exception e){
-        	
+        	e.printStackTrace();
+        	assertTrue(false);
         }
         
         // Assert that the input script contains 4 chunks

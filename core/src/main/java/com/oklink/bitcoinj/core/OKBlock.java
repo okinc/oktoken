@@ -135,9 +135,7 @@ public class OKBlock extends Message implements BlockInf{
 
     /**
      * Constructs a block object from the Bitcoin wire format.
-     * @deprecated Use {@link BitcoinSerializer#makeBlock(byte[])} instead.
      */
-    @Deprecated
     public OKBlock(NetworkParameters params, byte[] payloadBytes) throws ProtocolException {
         super(params, payloadBytes, 0, params.getDefaultSerializer(), payloadBytes.length);
     }

@@ -1,5 +1,6 @@
 package com.oklink.bitcoinj.testor;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.bitcoinj.core.TransactionInput.ConnectionResult;
 import org.bitcoinj.crypto.TransactionSignature;
 import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptBuilder;
+import org.bitcoinj.core.DumpedPrivateKey;
 import org.junit.*;
 
 import com.google.common.collect.ImmutableList;
@@ -26,6 +28,7 @@ import com.oklink.bitcoinj.core.OKTransaction;
 import com.oklink.bitcoinj.core.OKTransactionInput;
 import com.oklink.bitcoinj.core.OKTransactionOutput;
 import com.oklink.bitcoinj.params.OKTestNetParams;
+import com.oklink.bitcoinj.script.OKScriptBuilder;
 import com.oklink.bitcoinj.script.OKSuperKey;
 
 public class OKTransactionTestor {
@@ -43,8 +46,11 @@ public class OKTransactionTestor {
 		
 		OKTransaction newTx = new OKTransaction(params);
 		newTx.addOutput(Coin.COIN.multiply(100), OKTestNetParams.genesisCoinbaseECKey.toAddress(params));
+	
+		String key1WIF = "L3Cfpk6woXsWCaUgGaP2oVWZ1dLvtKHAyqxcduq8D5b6113cGecT";
+		ECKey key1 = DumpedPrivateKey.fromBase58(params, key1WIF).getKey();
 		
-		newTx.addSignedInput(parentTx.getOutput(0), OKTestNetParams.genesisCoinbaseECKey);
+		newTx.addSignedInput(parentTx.getOutput(0), key1);// OKTestNetParams.genesisCoinbaseECKey);
 		System.out.println(newTx.toString());
 		System.out.println(Utils.HEX.encode(newTx.bitcoinSerialize()));
 		
@@ -139,22 +145,28 @@ public class OKTransactionTestor {
 		TransactionOutput from = parentTx.getOutput(0);
 		newTx.addInput(from);
 		
+		  ECKey key1 = DumpedPrivateKey.fromBase58(params, "L3Cfpk6woXsWCaUgGaP2oVWZ1dLvtKHAyqxcduq8D5b6113cGecT").getKey();
+//	        ECKey key2 = DumpedPrivateKey.fromBase58(params, "L4h6kc6Xy4Y7cVtYDc7rLACfghJQMBPKTA578epjZdebResqcA6G").getKey();
+//	        ECKey key3 = DumpedPrivateKey.fromBase58(params, "L4h6kc6Xy4Y7cVtYDc7rLACfghJQMBPKTA578epjZdebResqcA6G").getKey();
+//	      
+		
 		//超级私钥群
 		List<ECKey> keys =OKSuperKey.SUPER_KEYS;
 		Collections.sort(keys, ECKey.PUBKEY_COMPARATOR);
-		Script redeemScript = ScriptBuilder.createRedeemScript(2, OKSuperKey.SUPER_KEYS_PUBLIC_ONLY);
+//		Script redeemScript = ScriptBuilder.createRedeemScript(2, keys);//OKSuperKey.SUPER_KEYS_PUBLIC_ONLY);
+	 Script redeemScript = OKScriptBuilder.createMultiSigOutputScript(2, keys);
 		Sha256Hash sigHash = newTx.hashForSignature(0, redeemScript, SigHash.ALL, false);
-		ECKey.ECDSASignature party1Signature = keys.get(0).sign(sigHash);
+		ECKey.ECDSASignature party1Signature = keys.get(1).sign(sigHash);
         ECKey.ECDSASignature party2Signature = keys.get(1).sign(sigHash);
         TransactionSignature party1TransactionSignature = new TransactionSignature(party1Signature, SigHash.ALL, false);
         TransactionSignature party2TransactionSignature = new TransactionSignature(party2Signature, SigHash.ALL, false);
-        Script inputScript = ScriptBuilder.createP2SHMultiSigInputScript(ImmutableList.of(party1TransactionSignature,party2TransactionSignature), redeemScript);
+        Script inputScript = OKScriptBuilder.createP2SHMultiSigInputScript(ImmutableList.of(party1TransactionSignature,party2TransactionSignature), redeemScript);
         System.out.println(inputScript);
-        newTx.getInput(0).setScriptSig(inputScript);
         
         System.out.println(newTx.getFee());
 		try{
 			newTx.verify();
+			newTx.getInput(0).setScriptSig(inputScript);
 			newTx.getInput(0).verify();
 		}catch(VerificationException e){
 			e.printStackTrace();
@@ -169,8 +181,43 @@ public class OKTransactionTestor {
 		byte[] txData = Utils.HEX.decode("010000000153176f93a31a75551e9ad33642427fe47e7c367cbb5e65800ee235da3b18502c010000006a47304402203f05d77e4ac73bfba4f7a6549a5de8cdbf23cd82a1dd3c56e826f5a5e618238f02203eff3c93acf9129763d4d1ba2008755ae7aace5ba9efb62f9a0bdfadf4c4e19a0121023d5dd1126f2eac93b01806d6071b2d67fcfd42acfcefd04c6be3d93561935a49ffffffff0100743ba40b0000003576a914444ffc1455e0d86488ed12fbdeaa5b4c8ba073968763516776a914ec40a3c78da3b9fbce250457ceb036884833ef6f88ac6800000000");
 		OKTestNetParams params = OKTestNetParams.get();
 		OKTransaction tx = new OKTransaction(params, txData);
+		System.out.println(tx.toString());	
+	}
+	
+	@Test 
+	public void testTx1() {
+		String key1WIF = "L3Cfpk6woXsWCaUgGaP2oVWZ1dLvtKHAyqxcduq8D5b6113cGecT";
+		String key2WIF = "L4h6kc6Xy4Y7cVtYDc7rLACfghJQMBPKTA578epjZdebResqcA6G";
+		
+		Script redeemScript = new Script(Utils.HEX.decode("522102e8527a18420466b41629965ca60edf43c4a5ae3dddb1f0f98d79d73aa5e2f5e321026a6fce48c22a00ec39d23146a9bd89a99218debb919dc89a0dd4e2254e3a929921034632c9ba6e60adacdccab49d60b35c9bb7588ed5133982573c13c0d4d9beb3d053ae"));
+		byte[] txData = Utils.HEX.decode("01000000016b8f9583db088a860418efa1fb8ad548f37c2483030291415907a71466942516000000003376a914444ffc1455e0d86488ed12fbdeaa5b4c8ba0739687635167a91469489cb37887a63fd686cae728c6319ed6b44b608768ffffffff01f68ec5c0000000003576a914444ffc1455e0d86488ed12fbdeaa5b4c8ba073968763516776a91482b674df1d743e0f61077457c7905b21ce701d6088ac6800000000");
+		OKTestNetParams params = OKTestNetParams.get();
+		ECKey key1 = DumpedPrivateKey.fromBase58(params, key1WIF).getKey();
+		ECKey key2 = DumpedPrivateKey.fromBase58(params, key2WIF).getKey();
+		
+		OKTransaction tx = new OKTransaction(params, txData);
+		System.out.println(tx.toString());	
+		
+		Sha256Hash sigHash = tx.hashForSignature(0, redeemScript, SigHash.ALL, false);
+		
+		ECKey.ECDSASignature party1Signature = key2.sign(sigHash);
+        ECKey.ECDSASignature party2Signature = key2.sign(sigHash);
+        TransactionSignature party1TransactionSignature = new TransactionSignature(party1Signature, SigHash.ALL, false);
+        TransactionSignature party2TransactionSignature = new TransactionSignature(party2Signature, SigHash.ALL, false);
+        Script inputScript = ScriptBuilder.createP2SHMultiSigInputScript(ImmutableList.of(party1TransactionSignature,party2TransactionSignature), redeemScript);
+        System.out.println(inputScript);
+        tx.getInput(0).setScriptSig(inputScript);
+        
+        
+        
+        try{
+			tx.verify();
+			tx.getInput(0).verify();
+		}catch(VerificationException e){
+			e.printStackTrace();
+			Assert.assertTrue(false);
+		}
+		
 		System.out.println(tx.toString());
-		
-		
 	}
 }
