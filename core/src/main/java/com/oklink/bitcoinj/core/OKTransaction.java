@@ -106,34 +106,34 @@ public class OKTransaction extends Transaction {
 	protected void parse() throws ProtocolException {
 		 cursor = offset;
 
-	        version = readUint32();
-	        optimalEncodingMessageSize = 4;
+        version = readUint32();
+        optimalEncodingMessageSize = 4;
 
-	        // First come the inputs.
-	        long numInputs = readVarInt();
-	        optimalEncodingMessageSize += VarInt.sizeOf(numInputs);
-	        inputs = new ArrayList<TransactionInput>((int) numInputs);
-	        for (long i = 0; i < numInputs; i++) {
-	            OKTransactionInput input = new OKTransactionInput(params, this, payload, cursor, serializer);
-	            inputs.add(input);
-	            long scriptLen = readVarInt(TransactionOutPoint.MESSAGE_LENGTH);
-	            optimalEncodingMessageSize += TransactionOutPoint.MESSAGE_LENGTH + VarInt.sizeOf(scriptLen) + scriptLen + 4;
-	            cursor += scriptLen + 4;
-	        }
-	        // Now the outputs
-	        long numOutputs = readVarInt();
-	        optimalEncodingMessageSize += VarInt.sizeOf(numOutputs);
-	        outputs = new ArrayList<TransactionOutput>((int) numOutputs);
-	        for (long i = 0; i < numOutputs; i++) {
-	            OKTransactionOutput output = new OKTransactionOutput(params, this, payload, cursor, serializer);
-	            outputs.add(output);
-	            long scriptLen = readVarInt(8);
-	            optimalEncodingMessageSize += 8 + VarInt.sizeOf(scriptLen) + scriptLen;
-	            cursor += scriptLen;
-	        }
-	        lockTime = readUint32();
-	        optimalEncodingMessageSize += 4;
-	        length = cursor - offset;
+        // First come the inputs.
+        long numInputs = readVarInt();
+        optimalEncodingMessageSize += VarInt.sizeOf(numInputs);
+        inputs = new ArrayList<TransactionInput>((int) numInputs);
+        for (long i = 0; i < numInputs; i++) {
+            OKTransactionInput input = new OKTransactionInput(params, this, payload, cursor, serializer);
+            inputs.add(input);
+            long scriptLen = readVarInt(TransactionOutPoint.MESSAGE_LENGTH);
+            optimalEncodingMessageSize += TransactionOutPoint.MESSAGE_LENGTH + VarInt.sizeOf(scriptLen) + scriptLen + 4;
+            cursor += scriptLen + 4;
+        }
+        // Now the outputs
+        long numOutputs = readVarInt();
+        optimalEncodingMessageSize += VarInt.sizeOf(numOutputs);
+        outputs = new ArrayList<TransactionOutput>((int) numOutputs);
+        for (long i = 0; i < numOutputs; i++) {
+            OKTransactionOutput output = new OKTransactionOutput(params, this, payload, cursor, serializer);
+            outputs.add(output);
+            long scriptLen = readVarInt(8);
+            optimalEncodingMessageSize += 8 + VarInt.sizeOf(scriptLen) + scriptLen;
+            cursor += scriptLen;
+        }
+        lockTime = readUint32();
+        optimalEncodingMessageSize += 4;
+        length = cursor - offset;
 	}
 
 	/**

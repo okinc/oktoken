@@ -1,6 +1,7 @@
 package com.oklink.bitcoinj.testor;
 
 
+import com.haoyouqian.bitcoinj.core.HYQKey;
 import com.oklink.bitcoinj.core.OKBlock;
 import com.oklink.bitcoinj.params.OKMainNetParams;
 import com.oklink.bitcoinj.params.OKTestNetParams;
@@ -38,6 +39,28 @@ public class OKNetParamsTest {
 	}
 	
 	@Test
+	public void testMainNetBurnAddress() {
+		NetworkParameters params = OKMainNetParams.get();
+		
+		String hash160Str = "0000000000000000000000000000000000000000";
+		 byte[] hash160 = new byte[20];
+		byte[] hash1600 = new byte[20];
+		for (int i = 0; i < 20; i++){
+			hash160[i] = (byte)0xFF;
+			hash1600[i] = 0;
+		}
+		
+		byte[] b = Utils.HEX.decode(hash160Str);
+		
+		Address address = new Address(params, Utils.HEX.decode(hash160Str));
+		Address address1 = new Address(params, hash160);
+		Address address0 = new Address(params, hash1600);
+		System.out.println(address.toBase58());
+		System.out.println(address1.toBase58());
+		System.out.println(address0.toBase58());
+	}
+	
+	@Test
 	public void testTestNetAddress(){
 		NetworkParameters params = OKTestNetParams.get();
 		
@@ -62,18 +85,22 @@ public class OKNetParamsTest {
 	@Test 
 	public void testMulitAddress(){
 		List<ECKey> keys  = new ArrayList<ECKey>(3);
+		long start = System.currentTimeMillis();
 		for(int i = 0; i < 3; i++){
 			ECKey eckey = new ECKey();	
 			System.out.println("ECKey_" + i + "\r\n   pri: " + eckey.getPrivateKeyAsHex() +
 					"\r\n   pub: " + eckey.getPublicKeyAsHex());
 			keys.add(eckey);
 		}
+		System.out.println("time costed:" + (System.currentTimeMillis() - start));
 		
 		
 		NetworkParameters params = OKMainNetParams.get();
 	
         Script p2shScript = ScriptBuilder.createP2SHOutputScript(2, keys);
         Address address = Address.fromP2SHScript(OKMainNetParams.get(), p2shScript);
+        
+        System.out.println("time costed:" + (System.currentTimeMillis() - start));
         
         assertEquals(address.getVersion(), params.getP2SHHeader());
         assertTrue(address.isP2SHAddress());
@@ -84,6 +111,7 @@ public class OKNetParamsTest {
         Address addressTestNet = Address.fromP2SHScript(OKTestNetParams.get(), p2shScript);
         System.out.println(addressTestNet.toString());
         assertTrue(addressTestNet.toString().startsWith("4"));    
+        System.out.println("time costed:" + (System.currentTimeMillis() - start));
 	}
 	
 	@Test

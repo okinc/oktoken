@@ -59,7 +59,7 @@ public class Sha256Hash implements Serializable, Comparable<Sha256Hash> {
         this.bytes = Utils.HEX.decode(hexString);
     }
 
-    /**
+    /**·
      * Creates a new instance that wraps the given hash value.
      *
      * @param rawHashBytes the raw hash bytes to wrap

@@ -127,7 +127,7 @@ public class OKBlock extends Message implements BlockInf{
         // Set up a few basic things. We are not complete after this though.
         version = setVersion;
 //        difficultyTarget = 0x1d07fff8L;
-        time =(int) (System.currentTimeMillis() / 1000);
+        time = (int) (System.currentTimeMillis() / 1000);
         prevBlockHash = Sha256Hash.ZERO_HASH;
 
         length = HEADER_SIZE;

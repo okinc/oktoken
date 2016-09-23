@@ -32,6 +32,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.protobuf.ByteString;
+import com.mysql.jdbc.log.Log;
+
 import org.bitcoinj.wallet.Protos;
 import org.bitcoinj.wallet.Protos.ScryptParameters;
 import org.junit.Before;
@@ -113,6 +115,7 @@ public class ECKeyTest {
         BigInteger privkey = new BigInteger(1, HEX.decode("180cb41c7c600be951b5d3d0a7334acc7506173875834f7a6c4c786a28fcbb19"));
         ECKey key = ECKey.fromPrivate(privkey);
         byte[] output = key.sign(Sha256Hash.ZERO_HASH).encodeToDER();
+        log.info("out:" + HEX.encode(output));
         assertTrue(key.verify(Sha256Hash.ZERO_HASH.getBytes(), output));
 
         // Test interop with a signature from elsewhere.
@@ -217,9 +220,10 @@ public class ECKeyTest {
     @Test
     public void signTextMessage() throws Exception {
         ECKey key = new ECKey();
-        String message = "聡中本";
+        String message = "hello";
         String signatureBase64 = key.signMessage(message);
-        log.info("Message signed with " + key.toAddress(MainNetParams.get()) + ": " + signatureBase64);
+        log.info("pubkey:" + key.getPublicKeyAsHex());
+        log.info("Message signed with " + key.toAddress(TestNet3Params.get()) + ": " + signatureBase64);
         // Should verify correctly.
         key.verifyMessage(message, signatureBase64);
         try {

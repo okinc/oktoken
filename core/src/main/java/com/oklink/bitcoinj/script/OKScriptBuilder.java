@@ -21,11 +21,10 @@ import static org.bitcoinj.script.ScriptOpCodes.*;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.ScriptException;
-import org.bitcoinj.core.Utils;
 import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptBuilder;
 
-import com.oklink.bitcoinj.params.OKTestNetParams;
+import com.oklink.bitcoinj.params.OKMainNetParams;
 
 public class OKScriptBuilder extends ScriptBuilder{
 
@@ -49,7 +48,7 @@ public class OKScriptBuilder extends ScriptBuilder{
 	 */
 	public static Script createAnchorOpReturn(byte[] data){
 		Script anchorOpReturn = new ScriptBuilder().op(OP_RETURN)
-				.data(OKTestNetParams.ANACHOR_FIX_FLAG)
+				.data(OKMainNetParams.ANACHOR_FIX_FLAG)
 				.data(data)
 				.build();
 		return anchorOpReturn;
