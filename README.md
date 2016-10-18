@@ -1,7 +1,7 @@
 # OKToken
-
- A Java SDK fork from Bitcoinj for OKLink-Blockchain money transfer network.
  
+ A Java lib for OKLink-Blockchain money transfer network.
+ This lib is forking from Bitcoinj.
  
  For more information visit [www.oklink.com]
  
