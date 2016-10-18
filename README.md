@@ -7,4 +7,6 @@
  
  ----
  
- Copyright © 2016, OKLink All rights reserved.
+ Copyright
+
+Released under MIT license
